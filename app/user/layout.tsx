@@ -6,7 +6,7 @@ export default function LeaderLayout({children}: {
 }) {
 
     return (
-        <div className="flex min-h-screen">
+        <div className="flex min-h-screen w-5xl xl:max-w-7xl mx-auto">
             {/* 左侧固定侧边栏 */}
             <aside className="w-64 p-4 overflow-y-auto bg-zinc-50 rounded-sm dark:bg-gray-900">
                 <UserSidebar />

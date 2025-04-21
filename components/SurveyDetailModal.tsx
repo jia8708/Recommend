@@ -1,11 +1,12 @@
-'use client';
-
-import { Modal,Divider } from 'antd';
+'use client'
+import { Modal, Divider, Spin } from 'antd';
 import { questions } from "@/app/recommend/util";
-import {LeaderCard} from "@/components/leaderCard";
-import React from "react";
-import {getLeaders, Leader} from "@/app/leader/util";
-import {ServerResponse} from '@/utils/type'
+import { LeaderCard } from "@/components/leaderCard";
+import React, { useState, useEffect } from "react";
+import { Leader } from "@/app/leader/util";
+import { ServerResponse } from '@/utils/type';
+import { baseUrl } from "@/utils/constance";
+import { useSession } from "next-auth/react";
 
 interface SurveyDetailModalProps {
     visible: boolean;
@@ -14,7 +15,49 @@ interface SurveyDetailModalProps {
     data: ServerResponse | null;
 }
 
-export default function SurveyDetailModal({ visible, onCancel, data,showChoice }: SurveyDetailModalProps) {
+export default function SurveyDetailModal({ visible, onCancel, data, showChoice }: SurveyDetailModalProps) {
+    const { data: session } = useSession();
+    const [leaders, setLeaders] = useState<Leader[]>([]);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (data?.result && visible) {
+            fetchLeaders();
+        }
+    }, [data, visible]);
+
+    const fetchLeaders = async () => {
+        if (!data?.result) return;
+        setLoading(true);
+        try {
+            // 使用 Promise.all 并行获取所有导师信息
+            const leaderPromises = data.result.map(async (each) => {
+                const response = await fetch(`${baseUrl}/mentor/page`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'token': `${session?.accessToken}`
+                    },
+                    body: JSON.stringify({
+                        message: each.name
+                    })
+                });
+                const result = await response.json();
+                if (result.code === 0 && result.data.records.length > 0) {
+                    return result.data.records[0];
+                }
+                return null;
+            });
+
+            const results = await Promise.all(leaderPromises);
+            setLeaders(results.filter((leader): leader is Leader => leader !== null));
+        } catch (error) {
+            console.error('获取导师信息失败:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     if (!data) return null;
 
     //获取用户每个问题回答的answer,回答格式为q1:...
@@ -87,26 +130,26 @@ export default function SurveyDetailModal({ visible, onCancel, data,showChoice }
                                 <Divider className="my-2"/>
                             </div>
                         ))}
-                    </div>:null
+                    </div> : null
                 }
 
                 <div>
                     <h3 className="text-lg font-semibold mb-4">推荐结果</h3>
                     <div className="divide-y divide-gray-200 dark:divide-gray-700 mx-auto w-3/4">
-                        <div className="grid grid-cols-1 gap-y-4">
-                            {data.result.map((each) => {
-                                // 在leaders数组中查找匹配的leader对象
-                                const leader = getLeaders().find((l: Leader) => l.name === each.name);
-
-                                // 如果找到匹配的leader则渲染LeaderCard，否则可以渲染null或占位内容
-                                return leader ? (
+                        {loading ? (
+                            <div className="flex justify-center py-4">
+                                <Spin />
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-1 gap-y-4">
+                                {leaders.map((leader) => (
                                     <LeaderCard
-                                        key={each.name}
+                                        key={leader.id}
                                         leader={leader}
                                     />
-                                ) : null;
-                            })}
-                        </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

@@ -1,13 +1,12 @@
 'use client'
+import Pagination from "@/components/pagination";
 import { LeaderCard } from "@/components/leaderCard";
 import { tagMap } from "@/app/tag/util";
-import { useEffect, useState } from 'react';
-import { baseUrl } from '@/utils/constance';
-import { useSession } from 'next-auth/react';
+import { useState, useEffect } from "react";
+import { baseUrl } from "@/utils/constance";
+import { useSession } from "next-auth/react";
 import { Spin } from 'antd';
-import Pagination from "@/components/pagination";
 
-// 添加类型定义
 type TagKey = keyof typeof tagMap;
 
 interface Leader {
@@ -25,22 +24,30 @@ interface LeaderResponse {
     data: {
         records: Leader[];
         total: number;
-        size: number;
-        current: number;
     };
     message: string;
 }
 
-export default function LeaderList({tag, currentPage, searchText}: {
+export default function LeaderList({
+                                       tag,
+                                       currentPage,
+                                       searchText,
+                                       onPageChange = () => {}, // 新增：父组件传递的回调函数，用于更新 currentPage
+                                   }: {
     tag: string;
     currentPage: number;
     searchText: string;
+    onPageChange: (page: number) => void; // 新增：回调函数类型
 }) {
     const { data: session } = useSession();
-    const [leaders, setLeaders] = useState<Leader[]>([]);
     const [loading, setLoading] = useState(true);
-    const [total, setTotal] = useState(0);
-    const pageSize = 5;
+    const [filteredLeaders, setFilteredLeaders] = useState<Leader[]>([]);
+    const [total, setTotal] = useState<number>();
+
+    // 安全地获取中文标签
+    const getChineseTag = (tagKey: string): string | null => {
+        return tagMap[tagKey as TagKey] || null;
+    };
 
     // 获取导师列表
     const fetchLeaders = async () => {
@@ -52,29 +59,16 @@ export default function LeaderList({tag, currentPage, searchText}: {
                     'token': `${session?.accessToken}`
                 },
                 body: JSON.stringify({
-                    current: currentPage,
-                    pageSize: pageSize,
-                    message: searchText || undefined
-                })
+                    pageSize: 100,
+                    specialty: getChineseTag(tag),
+                    message: searchText || undefined,
+                }),
             });
 
             const data: LeaderResponse = await response.json();
 
             if (data.code === 0) {
-                let filteredLeaders = data.data.records;
-                console.log("leaderlistdata", filteredLeaders,tag);
-
-                // 如果有标签筛选，在客户端进行过滤
-                if (tag) {
-                    const chineseTag = tagMap[tag as TagKey];
-                    if (chineseTag) {
-                        filteredLeaders = filteredLeaders.filter(
-                            leader => leader.specialty === chineseTag
-                        );
-                    }
-                }
-
-                setLeaders(filteredLeaders);
+                setFilteredLeaders(data.data.records);
                 setTotal(data.data.total);
             }
         } catch (error) {
@@ -84,6 +78,14 @@ export default function LeaderList({tag, currentPage, searchText}: {
         }
     };
 
+    // 检测 searchText 变化，如果 currentPage !== 1，则重置为 1
+    useEffect(() => {
+        if (searchText && currentPage !== 1) {
+            onPageChange(1); // 通知父组件更新 currentPage
+        }
+    }, [searchText, currentPage, onPageChange]);
+
+    // 主要数据加载逻辑
     useEffect(() => {
         if (session?.accessToken) {
             setLoading(true);
@@ -99,16 +101,27 @@ export default function LeaderList({tag, currentPage, searchText}: {
         );
     }
 
+    if (!total || filteredLeaders.length === 0) {
+        return (
+            <div className="py-6 text-center text-gray-500">
+                {tag ? `未找到${getChineseTag(tag) || tag}专业的导师` : '未找到导师'}
+            </div>
+        );
+    }
+
+    // 处理分页参数
+    const POSTS_PER_PAGE = 5;
+    const totalPages = Math.ceil(total / POSTS_PER_PAGE);
+
+    const slicePosts = filteredLeaders.slice(
+        (currentPage - 1) * POSTS_PER_PAGE,
+        Math.min(currentPage * POSTS_PER_PAGE, filteredLeaders.length)
+    );
+
     return (
         <div className="divide-y divide-gray-200 dark:divide-gray-700 ml-16">
             <div className="grid grid-cols-1 gap-y-4">
-                {!leaders.length && (
-                    <div className="py-6 text-center text-gray-500">
-                        {tag ? `未找到${tagMap[tag as TagKey] || tag}专业的导师` : '未找到导师'}
-                    </div>
-                )}
-
-                {leaders.map((leader) => (
+                {slicePosts.map((leader) => (
                     <LeaderCard
                         key={leader.id}
                         leader={leader}
@@ -116,13 +129,12 @@ export default function LeaderList({tag, currentPage, searchText}: {
                 ))}
             </div>
 
-            {total > pageSize && (
-                <div className="py-6">
-                    <Pagination
-                        currentPage={currentPage}
-                        totalPages={Math.ceil(total / pageSize)}
-                    />
-                </div>
+            {totalPages > 1 && (
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={onPageChange}
+                />
             )}
         </div>
     );

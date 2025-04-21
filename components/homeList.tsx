@@ -22,7 +22,7 @@ const HomeList =async () => {
                     <div className="mt-8 text-right">
                         <Link
                             href="/leader"
-                            className="inline-block px-6 py-2 text-[#f38181] hover:text-[#e66767] font-medium transition-colors"
+                            className="inline-block px-6 py-2 text-sky-500 hover:text-sky-700 font-medium transition-colors"
                         >
                             查看全部师资 →
                         </Link>

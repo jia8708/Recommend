@@ -23,6 +23,7 @@ export default function UserInfoPage() {
     const [form] = Form.useForm();
     const router = useRouter();
     const [messageApi, contextHolder] = message.useMessage();
+    const [user,setUser] = useState<UserInfo|null>(null);
 
     // 获取用户头像
     const fetchUserAvatar = async () => {
@@ -36,6 +37,11 @@ export default function UserInfoPage() {
             if (data.code === 0 && data.data?.userAvatar) {
                 const avatar = data.data.userAvatar;
                 setAvatarUrl(avatar.startsWith('/9j/') ? `data:image/jpeg;base64,${avatar}` : avatar);
+                setUser({
+                    userName:data.data.userName,
+                    userAvatar:'',
+                    userProfile:data.data.userProfile,
+                })
             }
         } catch (error) {
             console.error('获取头像失败:', error);
@@ -126,9 +132,10 @@ export default function UserInfoPage() {
                         avatarKey: Date.now().toString()
                     }
                 });
+                // 重新获取用户信息
+                await fetchUserAvatar();
                 setIsEditing(false);
                 setFileList([]);
-                await fetchUserAvatar();
             } else {
                 throw new Error(data.message || '更新失败');
             }
@@ -232,12 +239,12 @@ export default function UserInfoPage() {
                                     alt="用户头像"
                                 />
                                 <div>
-                                    <h2 className="text-xl font-semibold ml-4">{session?.user?.name}</h2>
+                                    <h2 className="text-xl font-semibold ml-4">{user?.userName}</h2>
                                 </div>
                             </div>
                             <div>
                                 <h3 className="text-lg font-medium mb-2">简介</h3>
-                                <p className="text-gray-600">{session?.user?.profile || '暂无简介'}</p>
+                                <p className="text-gray-600">{user?.userProfile || '暂无简介'}</p>
                             </div>
                         </div>
                     ) : (

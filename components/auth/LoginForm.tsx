@@ -37,7 +37,7 @@ export default function LoginForm() {
     };
 
     return (
-        <div className="max-w-md mx-auto p-6">
+        <div className="max-w-md mx-auto p-6 w-1/3">
             {contextHolder}
             <h1 className="text-2xl font-bold mb-6 text-center">登录</h1>
             <Form

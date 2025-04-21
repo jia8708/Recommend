@@ -1,6 +1,6 @@
 'use client'
 import React, { useState, useEffect } from 'react';
-import {Table, Button, Modal, Form, Input, message, Upload, Popconfirm, Space} from 'antd';
+import { Table, Button, Modal, Form, Input, message, Upload, Popconfirm, Space } from 'antd';
 import { PlusOutlined, UploadOutlined, MinusCircleOutlined, SearchOutlined } from '@ant-design/icons';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -162,7 +162,7 @@ export default function LeadersPage() {
                     },
                     body: JSON.stringify({
                         ...leaderData,
-                        id: editingLeader.id,
+                        id: Number(editingLeader.id),
                     })
                 });
                 const data = await response.json();

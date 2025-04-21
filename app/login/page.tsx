@@ -7,7 +7,7 @@ export default function LoginPage() {
         <div className="min-h-screen flex flex-col items-center justify-start w-full">
             <LoginForm />
             <div className="mt-4">
-                还没有账号？<Link href="/register" className="text-[#f38181] hover:text-[#e66767]">立即注册</Link>
+                还没有账号？<Link href="/register" className="text-sky-500 hover:text-sky-700">立即注册</Link>
             </div>
         </div>
     );

@@ -1,7 +1,7 @@
 'use client'
 import {usePathname} from 'next/navigation'
 import Link from 'next/link';
-import {Card, Space, Button, Modal, Form, Input, message, Popconfirm} from 'antd';
+import {Card, Space, Button, Modal, Form, Input, message, Popconfirm, Spin} from 'antd';
 import { LikeOutlined, MessageOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import React, { useState, useEffect } from 'react';
 import {baseUrl} from "@/utils/constance";
@@ -12,7 +12,7 @@ import { useSession } from "next-auth/react";
 const { TextArea } = Input;
 
 export default function ForumPage() {
-    const { data: session } = useSession();
+    const { data: session,status } = useSession();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [form] = Form.useForm();
@@ -31,9 +31,18 @@ export default function ForumPage() {
 
     // 获取帖子列表
     useEffect(() => {
-        fetchPosts();
-        fetchCurrentUser();
-    }, []);
+        if (status === "loading") return; // session 正在加载时不执行
+
+        if (status === "unauthenticated") {
+            messageApi.warning('请先登录');
+            return;
+        }
+
+        if (status === "authenticated" && session?.accessToken) {
+            fetchPosts();
+            fetchCurrentUser();
+        }
+    }, [session, status]);
 
     const fetchPosts = async () => {
         setLoading(true);
@@ -149,10 +158,11 @@ export default function ForumPage() {
     };
 
     const handleEditOk = () => {
+        const url = currentUser?.userRole === 'admin'?'/post/update':'/post/edit'
         editForm.validateFields().then(async (values) => {
             try {
                 const tagsArray = editTags.split(',').map((tag) => tag.trim());
-                const response = await fetch(baseUrl+'/post/edit', {
+                const response = await fetch(baseUrl+url, {
                     method: 'POST',
                     headers: {
                         'token': `${session?.accessToken}`,
@@ -168,7 +178,6 @@ export default function ForumPage() {
                 });
 
                 const data = await response.json();
-                console.log("edit data", data);
 
                 if (data.code === 0) {
                     messageApi.success('帖子更新成功');
@@ -203,7 +212,7 @@ export default function ForumPage() {
     };
 
     // 删除帖子
-    const handleDelete = async (postId: number, e) => {
+    const handleDelete = async (postId: number, e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault();
         e.stopPropagation();
 
@@ -224,7 +233,6 @@ export default function ForumPage() {
                 setAllPosts(allPosts.filter(post => post.id !== postId));
             } else {
                 const data = await response.json();
-                console.log("delete",data)
                 messageApi.error(data.message || '帖子删除失败');
             }
         } catch (error) {
@@ -234,7 +242,7 @@ export default function ForumPage() {
     };
 
     //点赞帖子
-    const handleLike = async (postId: number, e: React.MouseEvent) => {
+    const handleLike = async (postId: number, e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault();
         e.stopPropagation();
 
@@ -263,6 +271,12 @@ export default function ForumPage() {
             console.error(error);
         }
     };
+
+    if (status === "loading") {
+        return <div className="flex justify-center items-center min-h-screen">
+            <Spin size="large" />
+        </div>;
+    }
 
     return (
         <div className="max-w-4xl mx-auto px-4 py-8 w-full">
@@ -384,7 +398,7 @@ export default function ForumPage() {
                                         <MessageOutlined/>
                                         {post.commentsVOS ? post.commentsVOS.length : 0}
                                     </Space>,
-                                    currentUser && currentUser.id === post.user.id && (
+                                    (currentUser?.userRole === 'admin' || currentUser?.id === post.user.id) && (
                                         <EditOutlined
                                             key="edit"
                                             onClick={(e) => {
@@ -394,10 +408,10 @@ export default function ForumPage() {
                                             }}
                                         />
                                     ),
-                                    currentUser && currentUser.id === post.user.id && (
+                                    (currentUser?.userRole === 'admin' || currentUser?.id === post.user.id) && (
                                     <Popconfirm
                                         title="确定要删除这条帖子吗？"
-                                        onConfirm={(e) => handleDelete(post.id,e)}
+                                        onConfirm={() => handleDelete(post.id, new MouseEvent('click') as unknown as React.MouseEvent<HTMLElement>)}
                                         okText="确定"
                                         cancelText="取消"
                                     >

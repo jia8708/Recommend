@@ -23,9 +23,9 @@ export default function RootLayout({children,}: {children: React.ReactNode}) {
                 GeistMono.variable
             )}
         >
-        <body className="antialiased max-w-3xl xl:max-w-5xl mx-4 mt-8 lg:mx-auto">
+        <body className="antialiased max-w-5xl w-full mt-8 lg:mx-auto">
         <SessionProvider>
-            <main className="flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0">
+            <main className="min-w-0 mt-6 flex flex-col px-2 md:px-0">
                 <Navbar />
                 <AntdRegistry>{children}</AntdRegistry>
                 <Analytics />

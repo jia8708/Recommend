@@ -11,13 +11,14 @@ export default function Page() {
     const slug = path[2];
 
     const [searchText, setSearchText] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
 
     const handleSearch = (value: string) => {
         setSearchText(value);
     };
 
     return (
-        <div className="flex-1 p-8">
+        <div>
             <div className="mb-6 ml-auto w-2/3">
                 <Search
                     placeholder="搜索导师"
@@ -28,7 +29,7 @@ export default function Page() {
                     className="max-w-xl"
                 />
             </div>
-            <LeaderList tag={slug} currentPage={1} searchText={searchText}/>
+            <LeaderList tag={slug} currentPage={currentPage} searchText={searchText} onPageChange={setCurrentPage}/>
         </div>
     );
 }

@@ -369,7 +369,7 @@ export default function PostDetailPage() {
                                                     >
                                                         {comment.thumbNum}
                                                     </Button>
-                                                    {currentUser && currentUser.id === comment.userId && (
+                                                    {(currentUser?.userRole === 'admin' || currentUser?.id === comment.userId) && (
                                                         <div className="ml-2">
                                                             <Button
                                                                 icon={<EditOutlined/>}

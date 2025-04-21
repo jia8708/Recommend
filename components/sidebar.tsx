@@ -12,7 +12,7 @@ export default function Sidebar({tags}: { tags: Tag[] }) {
             <Link
                 href="/leader"
                 className={`block p-2 rounded hover:bg-gray-100 ${
-                    pathname.includes('leader') ? 'text-[#f38181]' : ''
+                    pathname.includes('leader') ? 'text-sky-500' : ''
                 }`}
             >
                 所有导师
@@ -28,7 +28,7 @@ export default function Sidebar({tags}: { tags: Tag[] }) {
                         className="flex items-center justify-between p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                         <div>
                             <span className={`${
-                                pathname.includes(tag.name) ? 'text-[#f38181]' : ''
+                                pathname.includes(tag.name) ? 'text-sky-500' : ''
                             }`}>
                         {tag.title}
                         </span>

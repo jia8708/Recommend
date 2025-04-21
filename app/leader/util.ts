@@ -76,7 +76,7 @@ export async function getLeaderInfo(id: string): Promise<LeaderInfo | null> {
         const data = await response.json();
 
         if(data.code === 0){
-            console.log("getLeaderInfo", data.data);
+            //console.log("getLeaderInfo", data.data);
             return data.data;
         }
         return null;

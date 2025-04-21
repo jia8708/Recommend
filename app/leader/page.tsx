@@ -8,6 +8,7 @@ const { Search } = Input;
 
 export default function Page() {
     const [searchText, setSearchText] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
 
     const handleSearch = (value: string) => {
         setSearchText(value);
@@ -33,7 +34,7 @@ export default function Page() {
                             className="max-w-xl"
                         />
                     </div>
-                    <LeaderList tag='' currentPage={1} searchText={searchText}/>
+                    <LeaderList tag='' currentPage={currentPage} searchText={searchText} onPageChange={setCurrentPage}/>
                 </main>
             </div>
         </section>

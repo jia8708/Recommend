@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react';
-import {Table, Button, Modal, Form, Input, message, Select, Upload, Popconfirm} from 'antd';
-import {DeleteOutlined, PlusOutlined, UploadOutlined} from '@ant-design/icons';
+import { Table, Button, Modal, Form, Input, message, Select, Upload, Popconfirm } from 'antd';
+import { DeleteOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { baseUrl } from '@/utils/constance';

@@ -12,6 +12,7 @@ export default function Page(){
     const page = path[4];
 
     const [searchText, setSearchText] = useState('');
+    const [currentPage, setCurrentPage] = useState(Number(page));
 
     const handleSearch = (value: string) => {
         setSearchText(value);
@@ -29,7 +30,7 @@ export default function Page(){
                     className="max-w-xl"
                 />
             </div>
-            <LeaderList tag={slug} currentPage={Number(page)} searchText={searchText}/>
+            <LeaderList tag={slug} currentPage={currentPage} searchText={searchText} onPageChange={setCurrentPage}/>
         </div>
 )
 }
