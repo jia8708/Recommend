@@ -94,12 +94,12 @@ export default function ForumPage() {
     };
 
     // 监听输入内容
-    const handleTagsChange = (e) => {
+    const handleTagsChange = (e: { target: { value: string; }; }) => {
         const value = e.target.value;
         setTags(value.replace(/\s+/g, ''));
     };
 
-    const handleEditTagsChange = (e) => {
+    const handleEditTagsChange = (e: { target: { value: string; }; }) => {
         const value = e.target.value;
         setEditTags(value.replace(/\s+/g, ''));
     };

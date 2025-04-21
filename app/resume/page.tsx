@@ -13,50 +13,9 @@ interface InterviewQuestion {
     keywords: string[];
 }
 
-interface ResumeInfo {
-    教育背景: Array<{
-        学校: string;
-        专业: string;
-        学历: string;
-        学术荣誉: string[];
-        'GPA/排名'?: string | null;
-        核心课程?: string[] | null;
-    }>;
-    兴趣爱好: {
-        学术相关?: string[] | null;
-        文体活动?: string[] | null;
-        特长?: string[] | null;
-        获得证书: string[];
-    };
-    校园生活: {
-        学生组织: Array<{
-            名称: string;
-            职务: string;
-            持续时间: string;
-        }>;
-        志愿服务?: string[] | null;
-        校园活动?: string[] | null;
-    };
-    科研项目: Array<{
-        项目名称: string;
-        担任角色: string | null;
-        项目成果: string;
-        个人贡献?: string | null;
-        关键技术?: string | null;
-        时间段?: string | null;
-    }>;
-    自我评价: {
-        个人优势?: string | null;
-        个性特点?: string | null;
-        发展目标: string;
-        学术能力?: string | null;
-    };
-}
-
 interface ResumeAnalysisResponse {
     status: string;
     interview_questions: string;
-    resume_info: ResumeInfo;
     message?: string;
 }
 

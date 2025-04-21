@@ -154,7 +154,7 @@ export default function SurveyPage() {
                         <div
                             key={question.id}
                             id={`question-${question.id}`}
-                            ref={el => fieldRefs.current[question.id] = el}
+                            ref={(el) => { fieldRefs.current[question.id] = el; }}
                             className={`transition-all duration-300 ${
                                 firstErrorField === question.id ? 'border-l-4 border-red-500 pl-2 bg-red-50' : 'border-l-2 border-white'
                             }`}
