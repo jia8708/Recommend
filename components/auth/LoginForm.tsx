@@ -20,6 +20,7 @@ export default function LoginForm() {
                 redirect: false,
                 userAccount: values.userAccount,
                 userPassword: values.userPassword,
+                callbackUrl: '/user/info'
             });
 
             if (result?.error) {
@@ -27,6 +28,7 @@ export default function LoginForm() {
             } else {
                 messageApi.success('登录成功');
                 router.push('/user/info');
+                router.refresh(); // 刷新页面以确保状态更新
             }
         } catch (error) {
             messageApi.error('登录失败，请稍后重试');

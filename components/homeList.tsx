@@ -3,14 +3,14 @@ import Link from 'next/link';
 import { getLeaders } from '@/app/leader/util';
 import { LeaderCard } from '@/components/leaderCard'
 
-const HomeList =async () => {
-    const leaders =await getLeaders();
+const HomeList = async () => {
+    const leaders = await getLeaders();
 
-    if(leaders && leaders.length > 0){
+    if (leaders && leaders.length > 0) {
         return (
             <div className="container mx-auto px-4 py-8">
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {leaders.slice(0,8).map((leader) => (
+                    {leaders.slice(0, 8).map((leader) => (
                         <LeaderCard
                             key={leader.name}
                             leader={leader}
@@ -30,7 +30,7 @@ const HomeList =async () => {
                 )}
             </div>
         );
-    }else{
+    } else {
         return <div></div>
     }
 };

@@ -23,7 +23,7 @@ export default function UserInfoPage() {
     const [form] = Form.useForm();
     const router = useRouter();
     const [messageApi, contextHolder] = message.useMessage();
-    const [user,setUser] = useState<UserInfo|null>(null);
+    const [user, setUser] = useState<UserInfo | null>(null);
 
     // 获取用户头像
     const fetchUserAvatar = async () => {
@@ -38,9 +38,9 @@ export default function UserInfoPage() {
                 const avatar = data.data.userAvatar;
                 setAvatarUrl(avatar.startsWith('/9j/') ? `data:image/jpeg;base64,${avatar}` : avatar);
                 setUser({
-                    userName:data.data.userName,
-                    userAvatar:'',
-                    userProfile:data.data.userProfile,
+                    userName: data.data.userName,
+                    userAvatar: '',
+                    userProfile: data.data.userProfile,
                 })
             }
         } catch (error) {
@@ -106,7 +106,7 @@ export default function UserInfoPage() {
                 avatarBase64 = avatarBase64.split(',')[1];
             }
 
-            const response = await fetch(baseUrl+'/user/update/my', {
+            const response = await fetch(baseUrl + '/user/update/my', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -210,7 +210,7 @@ export default function UserInfoPage() {
                         <div className="space-x-4">
                             <Button
                                 type="text"
-                                icon={<EditOutlined/>}
+                                icon={<EditOutlined />}
                                 onClick={handleEdit}
                                 disabled={isEditing}
                             >
@@ -219,7 +219,7 @@ export default function UserInfoPage() {
                             <Button
                                 type="text"
                                 danger
-                                icon={<LogoutOutlined/>}
+                                icon={<LogoutOutlined />}
                                 onClick={handleLogout}
                             >
                                 退出登录
@@ -261,9 +261,9 @@ export default function UserInfoPage() {
                             <Form.Item
                                 name="userName"
                                 label="昵称"
-                                rules={[{required: true, message: '请输入昵称!'}]}
+                                rules={[{ required: true, message: '请输入昵称!' }]}
                             >
-                                <Input/>
+                                <Input />
                             </Form.Item>
 
                             <Form.Item
@@ -280,8 +280,8 @@ export default function UserInfoPage() {
                                 >
                                     {fileList.length >= 1 ? null : (
                                         <div>
-                                            <UploadOutlined/>
-                                            <div style={{marginTop: 8}}>上传头像</div>
+                                            <UploadOutlined />
+                                            <div style={{ marginTop: 8 }}>上传头像</div>
                                         </div>
                                     )}
                                 </Upload>
@@ -291,7 +291,7 @@ export default function UserInfoPage() {
                                 name="userProfile"
                                 label="个人简介"
                             >
-                                <Input.TextArea rows={4}/>
+                                <Input.TextArea rows={4} />
                             </Form.Item>
 
                             <Form.Item>

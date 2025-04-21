@@ -4,12 +4,10 @@ import '../css/input.css'
 import { GeistSans } from 'geist/font/sans'
 import { GeistMono } from 'geist/font/mono'
 import  Navbar  from '../components/nav'
-import Footer from '../components/footer'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { AntdRegistry } from '@ant-design/nextjs-registry';
 import { SessionProvider } from 'next-auth/react';
-// import './globals.css';
 
 const cx = (...classes:any[]) => classes.filter(Boolean).join(' ')
 

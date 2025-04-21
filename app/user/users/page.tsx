@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Modal, Form, Input, message, Select, Upload, Popconfirm } from 'antd';
-import { DeleteOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons';
+import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { baseUrl } from '@/utils/constance';
@@ -229,7 +229,7 @@ export default function UsersPage() {
         {
             title: '操作',
             key: 'action',
-            render: (_: any, record: UserData) => (
+            render: (_: unknown, record: UserData) => (
                 <div className="space-x-2">
                     <Button
                         type="link"
