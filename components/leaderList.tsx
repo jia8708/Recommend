@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { baseUrl } from "@/utils/constance";
 import { useSession } from "next-auth/react";
 import { Spin } from 'antd';
+import { usePagination } from '@/contexts/PaginationContext';
 
 type TagKey = keyof typeof tagMap;
 
@@ -29,17 +30,14 @@ interface LeaderResponse {
 }
 
 export default function LeaderList({
-                                       tag,
-                                       currentPage,
-                                       searchText,
-                                       onPageChange = () => {}, // 新增：父组件传递的回调函数，用于更新 currentPage
-                                   }: {
+    tag,
+    searchText
+}: {
     tag: string;
-    currentPage: number;
     searchText: string;
-    onPageChange: (page: number) => void; // 新增：回调函数类型
 }) {
     const { data: session } = useSession();
+    const { currentPage,setCurrentPage } = usePagination();
     const [loading, setLoading] = useState(true);
     const [filteredLeaders, setFilteredLeaders] = useState<Leader[]>([]);
     const [total, setTotal] = useState<number>();
@@ -78,13 +76,6 @@ export default function LeaderList({
         }
     };
 
-    // 检测 searchText 变化，如果 currentPage !== 1，则重置为 1
-    useEffect(() => {
-        if (searchText && currentPage !== 1) {
-            onPageChange(1); // 通知父组件更新 currentPage
-        }
-    }, [searchText, currentPage, onPageChange]);
-
     // 主要数据加载逻辑
     useEffect(() => {
         if (session?.accessToken) {
@@ -92,6 +83,13 @@ export default function LeaderList({
             fetchLeaders();
         }
     }, [session?.accessToken, currentPage, searchText, tag]);
+
+    // 检测 searchText 变化，如果 currentPage !== 1，则重置为 1
+    useEffect(() => {
+        if (searchText && currentPage !== 1) {
+            setCurrentPage(1);
+        }
+    }, [searchText, currentPage]);
 
     if (loading) {
         return (
@@ -131,9 +129,7 @@ export default function LeaderList({
 
             {totalPages > 1 && (
                 <Pagination
-                    currentPage={currentPage}
                     totalPages={totalPages}
-                    onPageChange={onPageChange}
                 />
             )}
         </div>

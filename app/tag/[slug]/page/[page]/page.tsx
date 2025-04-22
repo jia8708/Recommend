@@ -1,18 +1,16 @@
 'use client'
 import LeaderList from "@/components/leaderList";
-import React, {useState} from "react";
+import React from "react";
 import { Input } from 'antd';
-import {usePathname} from "next/navigation";
+import { usePathname } from "next/navigation";
+import { usePagination } from '@/contexts/PaginationContext';
 const { Search } = Input;
 
 export default function Page(){
     const pathname = usePathname()
     const path = pathname.split('/')
     const slug = path[2];
-    const page = path[4];
-
-    const [searchText, setSearchText] = useState('');
-    const [currentPage, setCurrentPage] = useState(Number(page));
+    const {searchText, setSearchText } = usePagination();
 
     const handleSearch = (value: string) => {
         setSearchText(value);
@@ -30,7 +28,7 @@ export default function Page(){
                     className="max-w-xl"
                 />
             </div>
-            <LeaderList tag={slug} currentPage={currentPage} searchText={searchText} onPageChange={setCurrentPage}/>
+            <LeaderList tag={slug} searchText={searchText}/>
         </div>
-)
+    )
 }

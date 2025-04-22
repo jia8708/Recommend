@@ -1,22 +1,20 @@
 'use client'
 
-import {usePathname, useSearchParams} from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 import { useCallback } from 'react'
 import Link from 'next/link'
+import { usePagination } from '@/contexts/PaginationContext'
 
 interface PaginationProps {
     totalPages: number
-    currentPage: number
-    onPageChange?: (page: number) => void // 可选的回调函数
 }
 
 export default function Pagination({
-                                       totalPages,
-                                       currentPage,
-                                       onPageChange
-                                   }: PaginationProps)  {
+    totalPages,
+}: PaginationProps) {
     const pathname = usePathname()
     const searchParams = useSearchParams()
+    const { currentPage, setCurrentPage } = usePagination()
 
     // 创建带页码的新URL
     const createPageURL = useCallback((pageNumber: number | string) => {
@@ -27,14 +25,6 @@ export default function Pagination({
 
     const prevPage = currentPage - 1 > 0
     const nextPage = currentPage + 1 <= totalPages
-
-    // 处理页码变化
-    const handlePageChange = (page: number) => {
-        if (onPageChange) {
-            onPageChange(page) // 如果有回调优先使用
-        }
-        // 如果没有回调，默认行为是通过URL变化
-    }
 
     return (
         <div className="space-y-2 pt-6 pb-8 md:space-y-5">
@@ -47,7 +37,7 @@ export default function Pagination({
                 {prevPage && (
                     <Link
                         href={createPageURL(currentPage - 1)}
-                        onClick={() => handlePageChange(currentPage - 1)}
+                        onClick={() => setCurrentPage(currentPage - 1)}
                         rel="prev"
                     >
                         上一页
@@ -64,7 +54,7 @@ export default function Pagination({
                 {nextPage && (
                     <Link
                         href={createPageURL(currentPage + 1)}
-                        onClick={() => handlePageChange(currentPage + 1)}
+                        onClick={() => setCurrentPage(currentPage + 1)}
                         rel="next"
                     >
                         下一页

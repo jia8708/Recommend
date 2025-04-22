@@ -2,18 +2,13 @@
 import Sidebar from "@/components/sidebar";
 import { getTags } from "@/app/tag/util";
 import LeaderList from "@/components/leaderList";
-import React, { useState } from "react";
-import { usePathname } from "next/navigation";
+import React from "react";
 import { Input } from 'antd';
+import { usePagination } from '@/contexts/PaginationContext';
 const { Search } = Input;
 
 export default function Page() {
-    const pathname = usePathname()
-    const path = pathname.split('/')
-    const page = path[4];
-
-    const [searchText, setSearchText] = useState('');
-    const [currentPage, setCurrentPage] = useState(Number(page));
+    const { searchText,setSearchText } = usePagination();
 
     const handleSearch = (value: string) => {
         setSearchText(value);
@@ -39,7 +34,7 @@ export default function Page() {
                             className="max-w-xl"
                         />
                     </div>
-                    <LeaderList tag='' currentPage={currentPage} searchText={searchText} onPageChange={setCurrentPage} />
+                    <LeaderList tag='' searchText={searchText} />
                 </main>
             </div>
         </section>
