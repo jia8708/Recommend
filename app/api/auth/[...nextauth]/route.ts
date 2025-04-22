@@ -20,6 +20,19 @@ const handler = NextAuth({
                         body: JSON.stringify(credentials),
                     });
 
+                    // 检查响应状态
+                    if (!response.ok) {
+                        console.error('Login API error:', response.status, response.statusText);
+                        return null;
+                    }
+
+                    // 检查响应内容类型
+                    const contentType = response.headers.get('content-type');
+                    if (!contentType || !contentType.includes('application/json')) {
+                        console.error('Invalid content type:', contentType);
+                        return null;
+                    }
+
                     const data = await response.json();
 
                     if (data.code === 0 && data.data) {
@@ -52,7 +65,7 @@ const handler = NextAuth({
             }
             return token;
         },
-        async session({ session, token }: { session: any, token: any }) {
+        async session({ session, token }:{session:any, token:any}) {
             if (token) {
                 session.accessToken = token.accessToken;
                 session.user.profile = token.profile;
@@ -68,7 +81,8 @@ const handler = NextAuth({
     session: {
         strategy: 'jwt',
         maxAge: 30 * 24 * 60 * 60,
-    }
+    },
+    debug: process.env.NODE_ENV === 'development',
 });
 
 export { handler as GET, handler as POST }; 

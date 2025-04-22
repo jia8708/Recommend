@@ -11,7 +11,7 @@ declare module "next-auth" {
             profile?: string;
             avatarKey?: string;
             token?: string;
-            role?:string;
+            role?: string;
         }
     }
 
@@ -23,6 +23,6 @@ declare module "next-auth" {
         token: string;
         profile?: string;
         avatarKey?: string;
-        role:string;
+        role: string;
     }
 } 

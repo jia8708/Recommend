@@ -15,7 +15,7 @@ const adminNavItems = [
 
 export default function UserSidebar() {
     const { data: session } = useSession();
-    
+
     const navItems = [...baseNavItems, ...(session?.user?.role === 'admin' ? adminNavItems : [])];
 
     return (
@@ -38,7 +38,7 @@ export default function UserSidebar() {
                                     stroke="currentColor"
                                 >
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                          d="M9 5l7 7-7 7"/>
+                                        d="M9 5l7 7-7 7" />
                                 </svg>
                             </div>
                         </Link>

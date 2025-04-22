@@ -1,13 +1,13 @@
 'use client'
 import Sidebar from "@/components/sidebar";
-import {getTags} from "@/app/tag/util";
+import { getTags } from "@/app/tag/util";
 import LeaderList from "@/components/leaderList";
-import React, {useState} from "react";
-import {usePathname} from "next/navigation";
+import React, { useState } from "react";
+import { usePathname } from "next/navigation";
 import { Input } from 'antd';
 const { Search } = Input;
 
-export default function Page(){
+export default function Page() {
     const pathname = usePathname()
     const path = pathname.split('/')
     const page = path[4];
@@ -24,7 +24,7 @@ export default function Page(){
             <div className="flex min-h-screen">
                 {/* 左侧固定侧边栏 */}
                 <aside className="w-64 p-4 overflow-y-auto bg-zinc-50 rounded-sm dark:bg-gray-900">
-                    <Sidebar tags={getTags()}/>
+                    <Sidebar tags={getTags()} />
                 </aside>
 
                 {/* 右侧动态内容区 */}
@@ -39,7 +39,7 @@ export default function Page(){
                             className="max-w-xl"
                         />
                     </div>
-                    <LeaderList tag='' currentPage={currentPage} searchText={searchText} onPageChange={setCurrentPage}/>
+                    <LeaderList tag='' currentPage={currentPage} searchText={searchText} onPageChange={setCurrentPage} />
                 </main>
             </div>
         </section>

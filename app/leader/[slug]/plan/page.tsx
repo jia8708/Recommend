@@ -2,7 +2,7 @@
 
 import { Card, Empty, Spin, message } from 'antd';
 import { useEffect, useState } from 'react';
-import {usePathname} from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { getLeaderInfo } from '../../util';
 import { LeaderInfo } from '../../util';
 

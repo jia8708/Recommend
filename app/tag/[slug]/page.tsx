@@ -1,8 +1,8 @@
 'use client'
 import LeaderList from "@/components/leaderList";
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Input } from 'antd';
-import {usePathname} from "next/navigation";
+import { usePathname } from "next/navigation";
 const { Search } = Input;
 
 export default function Page() {
@@ -29,7 +29,7 @@ export default function Page() {
                     className="max-w-xl"
                 />
             </div>
-            <LeaderList tag={slug} currentPage={currentPage} searchText={searchText} onPageChange={setCurrentPage}/>
+            <LeaderList tag={slug} currentPage={currentPage} searchText={searchText} onPageChange={setCurrentPage} />
         </div>
     );
 }

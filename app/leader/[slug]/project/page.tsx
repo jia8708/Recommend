@@ -3,7 +3,7 @@ import { Card, List, Spin, message } from 'antd';
 import { useEffect, useState } from 'react';
 import { getLeaderInfo } from '../../util';
 import { LeaderInfo } from '../../util';
-import {usePathname} from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export default function ProjectPage() {
     const [leader, setLeader] = useState<LeaderInfo | null>(null);
