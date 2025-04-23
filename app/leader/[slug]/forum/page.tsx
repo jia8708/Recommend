@@ -4,7 +4,6 @@ import Link from 'next/link';
 import {Card, Space, Button, Modal, Form, Input, message, Popconfirm, Spin} from 'antd';
 import { LikeOutlined, MessageOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import React, { useState, useEffect } from 'react';
-import {baseUrl} from "@/utils/constance";
 import {formatDate} from "@/utils/util";
 import {Post,User} from "@/app/leader/[slug]/forum/util";
 import { useSession } from "next-auth/react";
@@ -47,7 +46,7 @@ export default function ForumPage() {
     const fetchPosts = async () => {
         setLoading(true);
         try {
-            const response = await fetch(baseUrl+'/post/list/page/vo', {
+            const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+'/post/list/page/vo', {
                 method: 'POST',
                 headers: {
                     'token': `${session?.accessToken}`,
@@ -74,7 +73,7 @@ export default function ForumPage() {
 
     const fetchCurrentUser = async () => {
         try {
-            const response = await fetch(`${baseUrl}/user/get/login`, {
+            const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/user/get/login`, {
                 headers: {
                     'token': `${session?.accessToken}`
                 },
@@ -122,7 +121,7 @@ export default function ForumPage() {
         form.validateFields().then(async (values) => {
             try {
                 const tagsArray = tags.split(',').map((tag) => tag.trim());
-                const response = await fetch(baseUrl+'/post/add', {
+                const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+'/post/add', {
                     method: 'POST',
                     headers: {
                         'token': `${session?.accessToken}`,
@@ -162,7 +161,7 @@ export default function ForumPage() {
         editForm.validateFields().then(async (values) => {
             try {
                 const tagsArray = editTags.split(',').map((tag) => tag.trim());
-                const response = await fetch(baseUrl+url, {
+                const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+url, {
                     method: 'POST',
                     headers: {
                         'token': `${session?.accessToken}`,
@@ -217,7 +216,7 @@ export default function ForumPage() {
         e.stopPropagation();
 
         try {
-            const response = await fetch(baseUrl+`/post/delete`, {
+            const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/post/delete`, {
                 method: 'POST',
                 headers: {
                     'token': `${session?.accessToken}`,
@@ -247,7 +246,7 @@ export default function ForumPage() {
         e.stopPropagation();
 
         try {
-            const response = await fetch(baseUrl + '/post_thumb/', {
+            const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL + '/post_thumb/', {
                 method: 'POST',
                 headers: {
                     'token': `${session?.accessToken}`,

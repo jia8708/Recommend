@@ -4,7 +4,6 @@ import { Table, Button, Modal, Form, Input, message, Upload, Popconfirm, Space }
 import { PlusOutlined, UploadOutlined, MinusCircleOutlined, SearchOutlined } from '@ant-design/icons';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { baseUrl } from '@/utils/constance';
 import type { UploadFile } from 'antd/es/upload/interface';
 
 interface Project {
@@ -50,7 +49,7 @@ export default function LeadersPage() {
     // 获取导师列表
     const fetchLeaders = async (page = currentPage, size = pageSize, searchMessage = searchText) => {
         try {
-            const response = await fetch(`${baseUrl}/mentor/page`, {
+            const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/mentor/page`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -85,7 +84,7 @@ export default function LeadersPage() {
     // 获取导师详细信息
     const fetchLeaderDetail = async (id: string) => {
         try {
-            const response = await fetch(`${baseUrl}/mentor/getById?id=${id}`, {
+            const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/mentor/getById?id=${id}`, {
                 headers: {
                     'token': `${session?.accessToken}`
                 }
@@ -112,7 +111,7 @@ export default function LeadersPage() {
             const formData = new FormData();
             formData.append('file', file);
 
-            const response = await fetch(`${baseUrl}/mentor/upload`, {
+            const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/mentor/upload`, {
                 method: 'POST',
                 headers: {
                     'token': `${session?.accessToken}`
@@ -154,7 +153,7 @@ export default function LeadersPage() {
 
             if (editingLeader) {
                 // 更新导师
-                const response = await fetch(`${baseUrl}/mentor/update`, {
+                const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/mentor/update`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -174,7 +173,7 @@ export default function LeadersPage() {
                 }
             } else {
                 // 创建导师
-                const response = await fetch(`${baseUrl}/mentor/add`, {
+                const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/mentor/add`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -201,7 +200,7 @@ export default function LeadersPage() {
     // 处理删除导师
     const handleDelete = async (id: string) => {
         try {
-            const response = await fetch(`${baseUrl}/mentor/delete?id=${id}`, {
+            const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/mentor/delete?id=${id}`, {
                 method: 'DELETE',
                 headers: {
                     'token': `${session?.accessToken}`

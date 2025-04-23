@@ -3,7 +3,6 @@ import Pagination from "@/components/pagination";
 import { LeaderCard } from "@/components/leaderCard";
 import { tagMap } from "@/app/tag/util";
 import { useState, useEffect } from "react";
-import { baseUrl } from "@/utils/constance";
 import { useSession } from "next-auth/react";
 import { Spin } from 'antd';
 import { usePagination } from '@/contexts/PaginationContext';
@@ -50,7 +49,7 @@ export default function LeaderList({
     // 获取导师列表
     const fetchLeaders = async () => {
         try {
-            const response = await fetch(`${baseUrl}/mentor/page`, {
+            const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/mentor/page`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -28,9 +28,8 @@ export type Leader = {
     research: string;
 }
 
-const session = await getSession();
-
 export async function getLeaders(): Promise<Leader[] | null> {
+    const session = await getSession();
     try {
         const response = await fetch(baseUrl+'/mentor/specialty', {
             method: 'POST',
@@ -60,6 +59,7 @@ export async function getLeaders(): Promise<Leader[] | null> {
 }
 
 export async function getLeaderInfo(id: string): Promise<LeaderInfo | null> {
+    const session = await getSession();
     try {
         const response = await fetch(baseUrl+'/mentor/getById?id='+id, {
             method: 'GET',

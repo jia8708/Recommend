@@ -3,7 +3,6 @@ import React, {useEffect, useState} from 'react';
 import { Upload, Button, message, Spin, Card, Tag, Switch } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import type { UploadFile, UploadChangeParam } from 'antd/es/upload/interface';
-import { baseUrl } from '@/utils/constance';
 import { useSession } from 'next-auth/react';
 
 interface InterviewQuestion {
@@ -59,7 +58,7 @@ export default function ResumePage() {
             const formData = new FormData();
             formData.append('file', file);
 
-            const response = await fetch(`${baseUrl}/file/upload`, {
+            const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/file/upload`, {
                 method: 'POST',
                 headers: {
                     'token': `${session?.accessToken}`
@@ -117,7 +116,7 @@ export default function ResumePage() {
     // 切换模式
     const handleModeChange = async (checked: boolean) => {
         try {
-            const response = await fetch(`${baseUrl}/file/mode?mode=${checked ? 1 : 0}`, {
+            const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/file/mode?mode=${checked ? 1 : 0}`, {
                 method: 'PUT',
                 headers: {
                     'token': `${session?.accessToken}`

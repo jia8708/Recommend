@@ -1,6 +1,5 @@
 'use client'
 import Link from 'next/link';
-import { baseUrl } from "@/utils/constance";
 import { formatDistanceToNow } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
 import { useState, useEffect, useCallback } from "react";
@@ -43,7 +42,7 @@ export default function CommentMessages() {
     const getCommentMessages = useCallback(async () => {
         try {
             setLoading(true);
-            const response = await fetch(`${baseUrl}/post/my/list/page/vo`, {
+            const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/post/my/list/page/vo`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -89,7 +88,7 @@ export default function CommentMessages() {
     //获取用户信息
     const userInfo = useCallback(async (userID: number): Promise<User | null> => {
         try {
-            const response = await fetch(`${baseUrl}/user/get/vo/?id=${userID}`, {
+            const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/user/get/vo/?id=${userID}`, {
                 method: 'GET',
                 headers: {
                     'token': `${session?.accessToken}`,

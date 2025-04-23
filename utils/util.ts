@@ -1,8 +1,6 @@
 import {baseUrl} from "@/utils/constance";
 import {getSession} from "next-auth/react";
 
-const session = await getSession();
-
 export function formatDate(date:Date) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0'); // 月份从 0 开始，需要加 1
@@ -15,8 +13,9 @@ export function formatDate(date:Date) {
 }
 
 export async function getImage(imgId: string): Promise<string> {
+    const session = await getSession();
     try {
-        const response = await fetch(`${baseUrl}/mentor/download?fileName=`+imgId, {
+        const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/mentor/download?fileName=`+imgId, {
             method: 'GET',
             headers: {
                 'token': `${session?.accessToken}`

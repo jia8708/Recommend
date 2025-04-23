@@ -5,7 +5,6 @@ import { EditOutlined, LogoutOutlined, UploadOutlined } from '@ant-design/icons'
 import type { UploadProps } from 'antd/es/upload';
 import { useRouter } from 'next/navigation';
 import type { UploadFile } from 'antd/es/upload/interface';
-import { baseUrl } from "@/utils/constance";
 import { useSession, signOut } from "next-auth/react";
 
 interface UserInfo {
@@ -28,7 +27,7 @@ export default function UserInfoPage() {
     // 获取用户头像
     const fetchUserAvatar = async () => {
         try {
-            const response = await fetch(`${baseUrl}/user/get/login`, {
+            const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/user/get/login`, {
                 headers: {
                     'token': `${session?.accessToken}`
                 }
@@ -106,7 +105,7 @@ export default function UserInfoPage() {
                 avatarBase64 = avatarBase64.split(',')[1];
             }
 
-            const response = await fetch(baseUrl + '/user/update/my', {
+            const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL + '/user/update/my', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

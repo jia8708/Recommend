@@ -5,7 +5,6 @@ import { LeaderCard } from "@/components/leaderCard";
 import React, { useState, useEffect } from "react";
 import { Leader } from "@/app/leader/util";
 import { ServerResponse } from '@/utils/type';
-import { baseUrl } from "@/utils/constance";
 import { useSession } from "next-auth/react";
 
 interface SurveyDetailModalProps {
@@ -32,7 +31,7 @@ export default function SurveyDetailModal({ visible, onCancel, data, showChoice 
         try {
             // 使用 Promise.all 并行获取所有导师信息
             const leaderPromises = data.result.map(async (each) => {
-                const response = await fetch(`${baseUrl}/mentor/page`, {
+                const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/mentor/page`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

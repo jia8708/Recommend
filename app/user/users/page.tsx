@@ -4,7 +4,6 @@ import { Table, Button, Modal, Form, Input, message, Select, Upload, Popconfirm 
 import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { baseUrl } from '@/utils/constance';
 import type { UploadFile } from 'antd/es/upload/interface';
 
 interface UserData {
@@ -37,7 +36,7 @@ export default function UsersPage() {
     // 获取用户列表
     const fetchUsers = async () => {
         try {
-            const response = await fetch(`${baseUrl}/user/list/page`, {
+            const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/user/list/page`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -121,7 +120,7 @@ export default function UsersPage() {
 
             if (editingUser) {
                 // 更新用户
-                const response = await fetch(`${baseUrl}/user/update`, {
+                const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/user/update`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -141,7 +140,7 @@ export default function UsersPage() {
                 }
             } else {
                 // 创建用户
-                const response = await fetch(`${baseUrl}/user/add`, {
+                const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/user/add`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -169,7 +168,7 @@ export default function UsersPage() {
     // 处理删除用户
     const handleDelete = async (id: string) => {
         try {
-            const response = await fetch(`${baseUrl}/user/delete`, {
+            const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/user/delete`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

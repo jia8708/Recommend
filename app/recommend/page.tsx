@@ -5,7 +5,6 @@ import { Button, Checkbox, Radio, Card, Divider, message, Input } from 'antd';
 import { questions } from "@/app/recommend/util";
 import SurveyDetailModal from '@/components/SurveyDetailModal';
 import {ServerResponse} from '@/utils/type'
-import {baseUrl} from "@/utils/constance";
 import { useSession } from "next-auth/react";
 
 export default function SurveyPage() {
@@ -92,7 +91,7 @@ export default function SurveyPage() {
             };
 
             // 2. 调用 API
-            const response = await fetch(`${baseUrl}/predict/`, {
+            const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/predict/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

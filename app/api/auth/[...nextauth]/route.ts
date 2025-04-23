@@ -1,6 +1,5 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { baseUrl } from '@/utils/constance';
 
 const handler = NextAuth({
     providers: [
@@ -12,7 +11,7 @@ const handler = NextAuth({
             },
             async authorize(credentials) {
                 try {
-                    const response = await fetch(`${baseUrl}/user/login`, {
+                    const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/user/login`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -65,12 +64,12 @@ const handler = NextAuth({
             }
             return token;
         },
-        async session({ session, token }:{session:any, token:any}) {
+        async session({ session, token }) {
             if (token) {
-                session.accessToken = token.accessToken;
-                session.user.profile = token.profile;
-                session.user.avatarKey = token.avatarKey;
-                session.user.role = token.role;
+                session.accessToken  = token.accessToken as string | undefined;
+                session.user.profile = token.profile as string | undefined;
+                session.user.avatarKey = token.avatarKey as string | undefined;
+                session.user.role = token.role as string | undefined;
             }
             return session;
         }
@@ -82,6 +81,7 @@ const handler = NextAuth({
         strategy: 'jwt',
         maxAge: 30 * 24 * 60 * 60,
     },
+    secret: process.env.NEXTAUTH_SECRET,
     debug: process.env.NODE_ENV === 'development',
 });
 

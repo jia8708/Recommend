@@ -5,7 +5,6 @@ import TextArea from 'antd/es/input/TextArea';
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import { Post,User,Comment } from "@/app/leader/[slug]/forum/util";
-import { baseUrl } from "@/utils/constance";
 import {formatDate} from "@/utils/util";
 import {usePathname} from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -37,7 +36,7 @@ export default function PostDetailPage() {
     //获取当前用户信息
     const fetchCurrentUser = async () => {
         try {
-            const response = await fetch(`${baseUrl}/user/get/login`, {
+            const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/user/get/login`, {
                 headers: {
                     'token': `${token}`,
                 },
@@ -59,7 +58,7 @@ export default function PostDetailPage() {
     //获取所有帖子
     const fetchPosts = async () => {
         try {
-            const response = await fetch(`${baseUrl}/post/list/page/vo`, {
+            const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/post/list/page/vo`, {
                 method: 'POST',
                 headers: {
                     'token': `${token}`,
@@ -93,7 +92,7 @@ export default function PostDetailPage() {
     //获取用户信息
     const userInfo = async (userID:number):Promise<User | null> => {
         try {
-            const response = await fetch(`${baseUrl}/user/get/vo/?id=${userID}`, {
+            const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/user/get/vo/?id=${userID}`, {
                 method: 'GET',
                 headers: {
                     'token': `${token}`,
@@ -143,7 +142,7 @@ export default function PostDetailPage() {
         }
 
         try {
-            const response = await fetch(`${baseUrl}/comments/add`, {
+            const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/comments/add`, {
                 method: 'POST',
                 headers: {
                     'token': `${token}`,
@@ -173,7 +172,7 @@ export default function PostDetailPage() {
     //评论删除
     const handleDeleteComment = async (commentId: number) => {
         try {
-            const response = await fetch(`${baseUrl}/comments/delete`, {
+            const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/comments/delete`, {
                 method: 'POST',
                 headers: {
                     'token': `${token}`,
@@ -209,7 +208,7 @@ export default function PostDetailPage() {
     const handleEditSubmit = async () => {
         try {
             const values = await editForm.validateFields();
-            const response = await fetch(`${baseUrl}/comments/edit`, {
+            const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/comments/edit`, {
                 method: 'POST',
                 headers: {
                     'token': `${token}`,
@@ -242,7 +241,7 @@ export default function PostDetailPage() {
         e.stopPropagation();
 
         try {
-            const response = await fetch(baseUrl + '/post_thumb/', {
+            const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+ '/post_thumb/', {
                 method: 'POST',
                 headers: {
                     'token': `${token}`,
@@ -270,7 +269,7 @@ export default function PostDetailPage() {
     //评论点赞
     const handleLikeComment = async (commentId: number) => {
         try {
-            const response = await fetch(`${baseUrl}/comments_thumb/`, {
+            const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/comments_thumb/`, {
                 method: 'POST',
                 headers: {
                     'token': `${token}`,

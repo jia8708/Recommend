@@ -3,7 +3,6 @@ import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
-import { baseUrl } from "@/utils/constance";
 import { message, Spin } from 'antd';
 import { useSession } from "next-auth/react";
 import { User } from "@/app/leader/[slug]/forum/util";
@@ -28,7 +27,7 @@ export default function LikeMessages() {
     const getThumbMessages = useCallback(async () => {
         try {
             setLoading(true);
-            const response = await fetch(`${baseUrl}/comments_thumb/thumbList`, {
+            const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/comments_thumb/thumbList`, {
                 method: 'GET',
                 headers: {
                     'token': `${session?.accessToken}`
@@ -60,7 +59,7 @@ export default function LikeMessages() {
     // 获取用户信息
     const userInfo = useCallback(async (userId: string): Promise<User | null> => {
         try {
-            const response = await fetch(`${baseUrl}/user/get/vo/?id=${userId}`, {
+            const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/user/get/vo/?id=${userId}`, {
                 method: 'GET',
                 headers: {
                     'token': `${session?.accessToken}`,

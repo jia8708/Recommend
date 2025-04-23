@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { Card, Table, Button, message } from 'antd';
 import SurveyDetailModal from '@/components/SurveyDetailModal';
 import { ServerResponse ,Subjective} from '@/utils/type';
-import { baseUrl } from '@/utils/constance';
 import { useSession } from "next-auth/react";
 
 export default function HistoryPage() {
@@ -22,7 +21,7 @@ export default function HistoryPage() {
         try {
             setLoading(true);
             // 从后端接口获取历史记录
-            const response = await fetch(`${baseUrl}/predict/list`, {
+            const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL+`/predict/list`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
