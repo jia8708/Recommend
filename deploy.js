@@ -5,7 +5,7 @@ const { NodeSSH } = require("node-ssh");
 
 // 配置信息
 const config = {
-  host: "10.16.60.77",
+  host: "10.16.90.231",
   username: "cquptjsj",
   password: "duanxiaolin",
   remotePath: "/home/cquptjsj/Desktop/next", // 指定远程路径
@@ -134,8 +134,8 @@ COPY package.json package-lock.json ./
 RUN npm install --production
 COPY . .
 ENV NODE_ENV=production
-ENV NEXT_PUBLIC_API_URL=http://10.16.60.77:8080
-ENV NEXTAUTH_URL=http://10.16.60.77:3000
+ENV NEXT_PUBLIC_API_URL=http://10.16.90.231:8080
+ENV NEXTAUTH_URL=http://10.16.90.231:3000
 ENV NEXTAUTH_SECRET=Fo9xQccimowaBWbwqhR/4WRlMNPa7MsfpvMUzT+qozM=
 EXPOSE 3000
 CMD ["npm", "start"]
@@ -151,8 +151,8 @@ services:
     restart: always
     environment:
       - NODE_ENV=production
-      - NEXT_PUBLIC_API_URL=http://10.16.60.77:8080
-      - NEXTAUTH_URL=http://10.16.60.77:3000
+      - NEXT_PUBLIC_API_URL=http://10.16.90.231:8080
+      - NEXTAUTH_URL=http://10.16.90.231:3000
       - NEXTAUTH_SECRET=Fo9xQccimowaBWbwqhR/4WRlMNPa7MsfpvMUzT+qozM=
     `.trim();
 
