@@ -8,7 +8,7 @@ import { usePagination } from '@/contexts/PaginationContext';
 const { Search } = Input;
 
 export default function Page() {
-    const { searchText,setSearchText } = usePagination();
+    const { searchText, setSearchText } = usePagination();
 
     const handleSearch = (value: string) => {
         setSearchText(value);

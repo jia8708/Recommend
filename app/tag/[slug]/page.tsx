@@ -10,7 +10,7 @@ export default function Page() {
     const pathname = usePathname()
     const path = pathname.split('/')
     const slug = path[2];
-    const { searchText,setSearchText } = usePagination();
+    const { searchText, setSearchText } = usePagination();
 
     const handleSearch = (value: string) => {
         setSearchText(value);
@@ -28,7 +28,7 @@ export default function Page() {
                     className="max-w-xl"
                 />
             </div>
-            <LeaderList tag={slug} searchText={searchText}/>
+            <LeaderList tag={slug} searchText={searchText} />
         </div>
     );
 }

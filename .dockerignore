@@ -1,0 +1,20 @@
+# 依赖目录（将在容器中重新安装）
+node_modules/
+
+# Git 相关
+.git/
+.gitignore
+
+# 文档文件
+*.md
+
+# 环境文件（可根据需要保留）
+.env*.local
+.env
+
+# 构建产物（如果不需要）
+.next/cache/
+
+# 其他开发文件
+.vscode/
+.idea/
